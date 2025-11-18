@@ -1,13 +1,8 @@
-<?php
-
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
-
 Route::group(['prefix'=>'products', 'as'=>'products.'], function () {
     Route::get('/', [ProductController::class, 'index'])->name('products');
     Route::get('/create', [ProductController::class, 'create'])->name('create');
-    Route::get('/edit', [ProductController::class, 'edit'])->name('edit');
+    Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('edit');    // now /products/edit/3
     Route::post('/store', [ProductController::class, 'store'])->name('store');
-    Route::post('/update', [ProductController::class, 'update'])->name('update');
-    Route::get('/show', [ProductController::class, 'show'])->name('show');
+    Route::post('/update/{id}', [ProductController::class, 'update'])->name('update'); // now /products/update/3
+    Route::get('/show/{id}', [ProductController::class, 'show'])->name('show');    // now /products/show/3
 });
