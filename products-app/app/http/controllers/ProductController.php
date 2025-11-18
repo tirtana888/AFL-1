@@ -1,33 +1,29 @@
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Models\Product;
-
-class ProductController extends Controller
+// show
+public function show($id)
 {
-    public function index()
-    {
-        $products = Product::orderBy('id','desc')->get();
-        return view('products.list', compact('products'));
-    }
+    $product = Product::findOrFail($id);
+    return view('products.show', compact('product'));
+}
 
-    public function show(Request $request)
-    {
-        $id = $request->query('id');
-        $product = Product::findOrFail($id);
-        return view('products.show', compact('product'));
-    }
+// edit
+public function edit($id)
+{
+    $product = Product::findOrFail($id);
+    return view('products.edit', compact('product'));
+}
 
-    public function create()
-    {
-        return view('products.create');
-    }
+// update (POST /products/update/{id})
+public function update(Request $request, $id)
+{
+    $data = $request->validate([
+        'name'=>'required|string|max:255',
+        'description'=>'nullable|string',
+        'price'=>'required|numeric|min:0'
+    ]);
 
-    public function edit(Request $request)
-    {
-        $id = $request->query('id');
-        $product = Product::findOrFail($id);
-        return view('products.edit', compact('product'));
-    }
+    $product = Product::findOrFail($id);
+    $product->update($data);
+
+    return redirect()->route('products.show', ['id'=>$product->id]);
+}
+
