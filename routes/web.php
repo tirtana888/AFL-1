@@ -1,54 +1,103 @@
 <?php
 
+/**
+ * =============================================================================
+ * ROUTES WEB - DEFINISI ROUTING APLIKASI
+ * =============================================================================
+ * File ini berisi semua route (URL) yang bisa diakses di aplikasi.
+ * 
+ * Struktur Route:
+ * - Public Routes    : Bisa diakses tanpa login
+ * - Protected Routes : Harus login (middleware 'auth')
+ * =============================================================================
+ */
+
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+// =============================================================================
+// PUBLIC ROUTES (Tidak perlu login)
+// =============================================================================
 
-// Home Page
+/**
+ * HOME PAGE
+ * URL: / (root)
+ * Menampilkan landing page dengan hero section dan kategori
+ */
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Product Routes (Public)
+/**
+ * PRODUCT ROUTES
+ * Semua route untuk mengelola produk (CRUD)
+ */
+
+// Menampilkan daftar produk dengan search, filter, sort
 Route::get('/products', [ProductController::class, 'index'])->name('products');
+
+// Form tambah produk baru
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+
+// Menyimpan produk baru ke database
 Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
+
+// Menampilkan detail satu produk
 Route::get('/products/show/{product}', [ProductController::class, 'show'])->name('products.show');
+
+// Form edit produk
 Route::get('/products/edit/{product}', [ProductController::class, 'edit'])->name('products.edit');
+
+// Update produk di database
 Route::post('/products/update/{product}', [ProductController::class, 'update'])->name('products.update');
 
-// Cart Routes (Auth Required)
+// =============================================================================
+// PROTECTED ROUTES (Harus login)
+// =============================================================================
+// Semua route di dalam group ini memerlukan autentikasi
+// Jika user belum login, akan diarahkan ke halaman login
+
 Route::middleware('auth')->group(function () {
-    // Cart
+
+    /**
+     * CART ROUTES - Keranjang Belanja
+     */
+
+    // Menampilkan isi keranjang (dengan subtotal dan total)
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+    // Menambahkan produk ke keranjang
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+
+    // Mengubah quantity produk di keranjang
     Route::patch('/cart/update/{cart}', [CartController::class, 'update'])->name('cart.update');
+
+    // Menghapus produk dari keranjang
     Route::delete('/cart/remove/{cart}', [CartController::class, 'remove'])->name('cart.remove');
 
-    // Checkout
+    /**
+     * CHECKOUT ROUTES - Proses Pembelian
+     */
+
+    // Menampilkan form checkout (alamat pengiriman & metode pembayaran)
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+
+    // Memproses checkout dan menyimpan order ke database
     Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
 
-    // Order History
-    Route::get('/orders', [OrderController::class, 'history'])->name('orders.history');
+    /**
+     * ORDER HISTORY - Riwayat Pembelian
+     */
 
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Menampilkan daftar semua order yang pernah dibuat user
+    Route::get('/orders', [OrderController::class, 'history'])->name('orders.history');
 });
 
-// Dashboard (Breeze)
-Route::get('/dashboard', function () {
-    return redirect()->route('products');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// =============================================================================
+// AUTH ROUTES (Login, Register, Logout)
+// =============================================================================
+// Route ini disediakan oleh Laravel Breeze
 
 require __DIR__ . '/auth.php';
