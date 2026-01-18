@@ -100,7 +100,8 @@ Route::prefix('admin')->middleware('admin')->group(function () {
  * Menampilkan landing page dengan hero section dan kategori
  */
 Route::get('/', function () {
-    return view('welcome');
+    $featuredProducts = \App\Models\Product::latest()->take(4)->get();
+    return view('welcome', compact('featuredProducts'));
 })->name('home');
 
 /**

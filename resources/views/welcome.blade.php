@@ -131,6 +131,59 @@
         </div>
     </div>
 
+    <!-- New Arrivals / Featured Products (Dynamic from DB) -->
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-end mb-4" data-aos="fade-up">
+            <div>
+                <h2 class="fw-bold mb-1">Fresh from Factory</h2>
+                <p class="text-muted mb-0">Latest additions to our collection</p>
+            </div>
+            <a href="{{ route('products') }}" class="btn btn-outline-primary rounded-pill px-4 hover-lift">
+                View All <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @foreach($featuredProducts as $product)
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                <div class="card h-100 border-0 shadow-sm hover-lift product-card">
+                    <div class="position-relative overflow-hidden rounded-top-4">
+                        <img src="{{ $product->image }}" class="card-img-top object-fit-cover" alt="{{ $product->name }}" style="height: 250px;">
+                        
+                        <!-- Stock Status Badges -->
+                        @if($product->stock <= 0)
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-flex align-items-center justify-content-center z-2">
+                                <span class="badge bg-danger px-3 py-2 rounded-pill shadow-sm">OUT OF STOCK</span>
+                            </div>
+                        @elseif($product->stock < 5)
+                            <div class="position-absolute top-0 end-0 m-3">
+                                <span class="badge bg-warning text-dark border border-warning-subtle shadow-sm animate-pulse">
+                                    Only {{ $product->stock }} left!
+                                </span>
+                            </div>
+                        @else
+                            <div class="position-absolute top-0 end-0 m-3">
+                                <span class="badge bg-white text-dark shadow-sm">New</span>
+                            </div>
+                        @endif
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <div class="text-muted small mb-2">{{ $product->category->name }}</div>
+                        <h5 class="card-title fw-bold text-truncate mb-2">{{ $product->name }}</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="text-primary fw-bolder mb-0">Rp {{ number_format($product->price, 0, ',', '.') }}</h5>
+                            <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm btn-light rounded-circle p-2 {{ $product->stock <= 0 ? 'disabled' : '' }}" style="width: 40px; height: 40px;">
+                                <i class="bi bi-bag-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
     <!-- Features Section (Modern) -->
     <div class="container py-5">
         <div class="row g-4">
