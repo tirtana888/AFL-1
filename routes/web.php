@@ -15,7 +15,56 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\StockController;
 use Illuminate\Support\Facades\Route;
+
+// =============================================================================
+// ADMIN ROUTES
+// =============================================================================
+
+// Admin Authentication (No middleware)
+Route::prefix('admin')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/login', [AdminAuthController::class, 'login']);
+});
+
+// Admin Protected Routes
+Route::prefix('admin')->middleware('admin')->group(function () {
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    
+    // Stock Management
+    Route::resource('stock', StockController::class)->only(['index', 'edit', 'update']);
+    
+    // Discounts (simplified - just routes, will create controller later)
+    Route::get('/discounts', function() { 
+        return view('admin.discounts.index', ['discounts' => []]); 
+    })->name('admin.discounts.index');
+    Route::get('/discounts/create', function() { 
+        return view('admin.discounts.create'); 
+    })->name('admin.discounts.create');
+    
+    // Blog (simplified)
+    Route::get('/blogs', function() { 
+        return view('admin.blogs.index', ['blogs' => []]); 
+    })->name('admin.blogs.index');
+    Route::get('/blogs/create', function() { 
+        return view('admin.blogs.create'); 
+    })->name('admin.blogs.create');
+    
+    // Users
+    Route::get('/users', function() { 
+        $users = \App\Models\User::paginate(20); 
+        return view('admin.users.index', compact('users')); 
+    })->name('admin.users.index');
+    
+    // Profile
+    Route::get('/profile', function() { 
+        return view('admin.profile.edit'); 
+    })->name('admin.profile.edit');
+});
 
 // =============================================================================
 // PUBLIC ROUTES (Tidak perlu login)

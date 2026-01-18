@@ -17,7 +17,8 @@ class ProductSeeder extends Seeder
                 'name' => 'Samsung Galaxy A54 5G', 
                 'description' => 'Smartphone Samsung dengan layar Super AMOLED 6.4 inch, RAM 8GB, Storage 256GB, Kamera 50MP', 
                 'price' => 5499000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Samsung+A54'
+                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Samsung+A54',
+                'stock' => 50
             ],
             [
                 'category_id' => 1, 

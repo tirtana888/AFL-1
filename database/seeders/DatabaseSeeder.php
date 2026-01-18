@@ -12,6 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create admin account
+        $this->call(AdminSeeder::class);
+        
         // Create categories first
         $this->call(CategorySeeder::class);
 
