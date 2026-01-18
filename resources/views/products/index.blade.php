@@ -81,10 +81,23 @@
                 @foreach($products as $product)
                     <div class="col fade-in">
                         <div class="card h-100 product-card border-0 shadow-sm">
-                            <!-- Product Image Placeholder -->
-                            <div class="card-img-top d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);">
-                                <i class="bi bi-box-seam" style="font-size: 60px; color: #667eea40;"></i>
+                            <!-- Product Image -->
+                            <div class="card-img-top position-relative overflow-hidden" style="height: 200px;">
+                                @if($product->image)
+                                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-100 h-100 object-fit-cover transition-transform">
+                                @else
+                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light"
+                                         style="background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);">
+                                        <i class="bi bi-box-seam" style="font-size: 60px; color: #667eea40;"></i>
+                                    </div>
+                                @endif
+                                
+                                {{-- Hover Overlay --}}
+                                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-25 opacity-0 hover-opacity transition-opacity">
+                                    <a href="{{ route('products.show', $product) }}" class="btn btn-light rounded-circle shadow-sm">
+                                        <i class="bi bi-eye text-primary"></i>
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="card-body">

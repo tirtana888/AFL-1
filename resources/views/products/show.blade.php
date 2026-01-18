@@ -15,9 +15,13 @@
             {{-- Product Image --}}
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm">
-                    <div class="card-body text-center bg-light"
+                    <div class="card-body text-center bg-light p-0 position-relative overflow-hidden"
                         style="min-height: 400px; display: flex; align-items: center; justify-content: center;">
-                        <i class="bi bi-image" style="font-size: 100px; color: #ccc;"></i>
+                        @if($product->image)
+                            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid w-100 h-100 object-fit-cover">
+                        @else
+                            <i class="bi bi-image" style="font-size: 100px; color: #ccc;"></i>
+                        @endif
                     </div>
                 </div>
             </div>

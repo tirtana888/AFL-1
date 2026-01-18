@@ -15,8 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     
-    <!-- Dark Mode CSS -->
     <link href="{{ asset('css/darkmode.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom-product.css') }}" rel="stylesheet">
     
     <!-- Dark Mode Script (Load early to prevent flash) -->
     <script src="{{ asset('js/darkmode.js') }}"></script>

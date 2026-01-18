@@ -1,0 +1,21 @@
+/* Product Card Image Enhancements */
+.transition-transform {
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .transition-transform {
+    transform: scale(1.05);
+    /* Zoom effect on hover */
+}
+
+.hover-opacity {
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .hover-opacity {
+    opacity: 1 !important;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
