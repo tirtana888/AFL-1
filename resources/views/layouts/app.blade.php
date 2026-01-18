@@ -266,6 +266,33 @@
                         </li>
                     @endauth
                     
+                    <!-- Language Switcher -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-translate"></i> {{ strtoupper(app()->getLocale()) }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <form action="{{ route('locale.switch') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="id">
+                                    <button type="submit" class="dropdown-item {{ app()->getLocale() == 'id' ? 'active' : '' }}">
+                                        🇮🇩 Indonesia
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ route('locale.switch') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="en">
+                                    <button type="submit" class="dropdown-item {{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                                        🇬🇧 English
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    
                     <!-- Dark Mode Toggle -->
                     <li class="nav-item">
                         <button onclick="toggleDarkMode()" class="dark-mode-toggle ms-2" title="Toggle Dark Mode">

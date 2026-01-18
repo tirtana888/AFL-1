@@ -95,6 +95,9 @@ Route::get('/contact', function () {
     return view('pages.contact');
 })->name('contact');
 
+// Language Switcher
+Route::post('/locale/switch', [App\Http\Controllers\LocaleController::class, 'switch'])->name('locale.switch');
+
 /**
  * PRODUCT ROUTES
  * Semua route untuk mengelola produk (CRUD)
@@ -172,6 +175,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/products/{product}/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
     Route::put('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
+    
+    /**
+     * LOYALTY PROGRAM - Points & Rewards
+     */
+    Route::get('/loyalty', [\App\Http\Controllers\LoyaltyController::class, 'index'])->name('loyalty.index');
+    Route::post('/loyalty/redeem', [\App\Http\Controllers\LoyaltyController::class, 'redeem'])->name('loyalty.redeem');
 });
 
 // =============================================================================

@@ -82,4 +82,14 @@ class User extends Authenticatable
     {
         return $this->wishlists()->pluck('product_id')->toArray();
     }
+    
+    public function loyaltyPoints()
+    {
+        return $this->hasMany(\App\Models\LoyaltyPoint::class);
+    }
+    
+    public function vouchers()
+    {
+        return $this->hasMany(\App\Models\Voucher::class);
+    }
 }
