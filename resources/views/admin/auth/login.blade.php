@@ -40,7 +40,7 @@
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Email Address</label>
-                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
+                        <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" 
                                value="{{ old('email') }}" required autofocus>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -49,7 +49,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
+                        <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" required>
                         @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -66,10 +66,21 @@
                 </form>
 
                 <div class="text-center mt-4">
+                    <button type="button" onclick="fillDemo()" class="btn btn-outline-secondary btn-sm mb-2">
+                        <i class="bi bi-magic"></i> Auto-fill Demo Credentials
+                    </button>
+                    <br>
                     <small class="text-muted">
-                        Demo: demo@ciputra.com / ALP4
+                        demo@ciputra.com / ALP4
                     </small>
                 </div>
+
+                <script>
+                    function fillDemo() {
+                        document.getElementById('email').value = 'demo@ciputra.com';
+                        document.getElementById('password').value = 'ALP4';
+                    }
+                </script>
 
                 <div class="text-center mt-3">
                     <a href="{{ route('home') }}" class="text-decoration-none">
