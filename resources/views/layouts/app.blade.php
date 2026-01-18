@@ -311,11 +311,10 @@
                 <div class="col-md-4 mb-4 mb-md-0">
                     <h6>Quick Links</h6>
                     <ul class="list-unstyled text-white-50">
-                        <li><a href="{{ route('products') }}" class="text-white-50 text-decoration-none">Products</a>
-                        </li>
-                        <li><a href="{{ route('login') }}" class="text-white-50 text-decoration-none">Login</a></li>
-                        <li><a href="{{ route('register') }}" class="text-white-50 text-decoration-none">Register</a>
-                        </li>
+                        <li><a href="{{ route('products') }}" class="text-white-50 text-decoration-none hover-link">Products</a></li>
+                        <li><a href="{{ route('about') }}" class="text-white-50 text-decoration-none hover-link">About Us</a></li>
+                        <li><a href="{{ route('faq') }}" class="text-white-50 text-decoration-none hover-link">FAQ</a></li>
+                        <li><a href="{{ route('contact') }}" class="text-white-50 text-decoration-none hover-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">

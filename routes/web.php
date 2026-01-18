@@ -31,6 +31,22 @@ Route::get('/', function () {
 })->name('home');
 
 /**
+ * STATIC PAGES
+ * Halaman informatif (About, FAQ, Contact)
+ */
+Route::get('/about', function () {
+    return view('pages.about');
+})->name('about');
+
+Route::get('/faq', function () {
+    return view('pages.faq');
+})->name('faq');
+
+Route::get('/contact', function () {
+    return view('pages.contact');
+})->name('contact');
+
+/**
  * PRODUCT ROUTES
  * Semua route untuk mengelola produk (CRUD)
  */
