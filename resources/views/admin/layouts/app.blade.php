@@ -85,8 +85,8 @@
             <a href="{{ route('admin.stock.index') }}" class="nav-link {{ request()->routeIs('admin.stock.*') ? 'active' : '' }}">
                 <i class="bi bi-box-seam me-2"></i> Stock Management
             </a>
-            <a href="{{ route('admin.discounts.index') }}" class="nav-link {{ request()->routeIs('admin.discounts.*') ? 'active' : '' }}">
-                <i class="bi bi-percent me-2"></i> Discounts
+            <a href="{{ route('admin.promo-codes.index') }}" class="nav-link {{ request()->routeIs('admin.promo-codes.*') ? 'active' : '' }}">
+                <i class="bi bi-ticket-perforated me-2"></i> Promo Codes
             </a>
             <a href="{{ route('admin.blogs.index') }}" class="nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">
                 <i class="bi bi-newspaper me-2"></i> Blog Posts

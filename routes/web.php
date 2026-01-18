@@ -64,6 +64,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/profile', function() { 
         return view('admin.profile.edit'); 
     })->name('admin.profile.edit');
+    
+    // Promo Codes
+    Route::resource('promo-codes', \App\Http\Controllers\Admin\PromoCodeController::class);
 });
 
 // =============================================================================
@@ -154,6 +157,9 @@ Route::middleware('auth')->group(function () {
 
     // Memproses checkout dan menyimpan order ke database
     Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
+
+    Route::post('/checkout/promo', [OrderController::class, 'applyPromoCode'])->name('checkout.applyPromo');
+    Route::post('/checkout/promo/remove', [OrderController::class, 'removePromoCode'])->name('checkout.removePromo');
 
     /**
      * ORDER HISTORY - Riwayat Pembelian

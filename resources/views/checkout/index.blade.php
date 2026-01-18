@@ -113,6 +113,12 @@
                             <span class="text-muted">Subtotal</span>
                             <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
                         </div>
+                        @if($discount > 0)
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Discount ({{ $promoCode->code }})</span>
+                                <span class="text-danger">-Rp {{ number_format($discount, 0, ',', '.') }}</span>
+                            </div>
+                        @endif
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-muted">Shipping</span>
                             <span class="text-success">Free</span>
@@ -120,8 +126,33 @@
                         <hr>
                         <div class="d-flex justify-content-between">
                             <span class="fw-bold">Total</span>
-                            <span class="fw-bold text-success fs-4">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                            <span class="fw-bold text-success fs-4">Rp {{ number_format($total - $discount, 0, ',', '.') }}</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mt-3">
+                    <div class="card-header bg-transparent border-0 pt-3 pb-0">
+                        <h6 class="fw-bold mb-0">Promo Code</h6>
+                    </div>
+                    <div class="card-body">
+                        @if(session('applied_promo'))
+                            <div class="d-flex align-items-center justify-content-between bg-light p-2 rounded">
+                                <span class="fw-bold text-success">{{ session('applied_promo') }}</span>
+                                <form action="{{ route('checkout.removePromo') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-link text-danger p-0">Remove</button>
+                                </form>
+                            </div>
+                        @else
+                            <form action="{{ route('checkout.applyPromo') }}" method="POST">
+                                @csrf
+                                <div class="input-group">
+                                    <input type="text" name="code" class="form-control" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                        @endif
                     </div>
                 </div>
 
