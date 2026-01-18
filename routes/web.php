@@ -204,3 +204,24 @@ Route::middleware('auth')->group(function () {
 // Route ini disediakan oleh Laravel Breeze
 
 require __DIR__ . '/auth.php';
+
+Route::get('/debug-admin', function() {
+    try {
+        $admin = \App\Models\Admin::first();
+        // Force login if exists
+        if ($admin) {
+            \Illuminate\Support\Facades\Auth::guard('admin')->login($admin);
+        }
+        
+        $user = \Illuminate\Support\Facades\Auth::guard('admin')->user();
+        
+        return response()->json([
+            'admin_from_db' => $admin,
+            'current_user' => $user,
+            'check' => \Illuminate\Support\Facades\Auth::guard('admin')->check(),
+            'message' => 'Debug info'
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
