@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -11,230 +10,146 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $products = [
-            // Smartphone & Tablet (category_id: 1)
+            // ELECTRONICS (ID: 1)
             [
-                'category_id' => 1, 
-                'name' => 'Samsung Galaxy A54 5G', 
-                'description' => 'Smartphone Samsung dengan layar Super AMOLED 6.4 inch, RAM 8GB, Storage 256GB, Kamera 50MP', 
-                'price' => 5499000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Samsung+A54',
+                'category_id' => 1,
+                'name' => 'iPhone 15 Pro Max',
+                'description' => 'The ultimate iPhone with titanium design, A17 Pro chip, and 48MP camera system.',
+                'price' => 24999000,
+                'image' => 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=800',
                 'stock' => 50
             ],
             [
-                'category_id' => 1, 
-                'name' => 'iPhone 15 Pro Max', 
-                'description' => 'iPhone terbaru dengan chip A17 Pro, layar 6.7 inch, kamera 48MP, Dynamic Island', 
-                'price' => 21999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=iPhone+15+Pro'
-            ],
-            [
-                'category_id' => 1, 
-                'name' => 'Xiaomi Redmi Note 12 Pro', 
-                'description' => 'HP Xiaomi dengan layar AMOLED 120Hz, kamera 108MP, fast charging 67W', 
-                'price' => 3799000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Redmi+Note+12'
-            ],
-            [
-                'category_id' => 1, 
-                'name' => 'OPPO Reno 10 Pro', 
-                'description' => 'Smartphone OPPO dengan kamera telephoto 32MP, layar 120Hz, charging 80W', 
-                'price' => 6999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=OPPO+Reno+10'
-            ],
-            [
-                'category_id' => 1, 
-                'name' => 'Vivo V29 5G', 
-                'description' => 'HP Vivo dengan Aura Light Portrait, kamera 50MP, RAM 12GB', 
-                'price' => 5499000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Vivo+V29'
-            ],
-            [
-                'category_id' => 1, 
-                'name' => 'Samsung Galaxy Tab S9', 
-                'description' => 'Tablet Samsung layar 11 inch, Snapdragon 8 Gen 2, S Pen included', 
-                'price' => 11999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Samsung+Tab+S9'
-            ],
-
-            // Laptop & Komputer (category_id: 2)
-            [
-                'category_id' => 2, 
-                'name' => 'ASUS ROG Strix G16', 
-                'description' => 'Laptop gaming Intel i7 Gen 13, RTX 4060, RAM 16GB, SSD 512GB', 
-                'price' => 22999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=ASUS+ROG+Strix'
-            ],
-            [
-                'category_id' => 2, 
-                'name' => 'Lenovo IdeaPad Slim 5', 
-                'description' => 'Laptop ultrabook AMD Ryzen 7, RAM 16GB, SSD 512GB, layar 14 inch FHD', 
-                'price' => 10999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Lenovo+IdeaPad'
-            ],
-            [
-                'category_id' => 2, 
-                'name' => 'HP Pavilion 15', 
-                'description' => 'Laptop HP Intel Core i5 Gen 12, RAM 8GB, SSD 512GB, Windows 11', 
-                'price' => 8499000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=HP+Pavilion'
-            ],
-            [
-                'category_id' => 2, 
-                'name' => 'Acer Aspire 5', 
-                'description' => 'Laptop Acer AMD Ryzen 5, RAM 8GB, SSD 256GB, layar 15.6 inch IPS', 
-                'price' => 7299000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Acer+Aspire'
-            ],
-            [
-                'category_id' => 2, 
-                'name' => 'MacBook Air M2', 
-                'description' => 'Laptop Apple dengan chip M2, RAM 8GB, SSD 256GB, layar Retina 13.6 inch', 
+                'category_id' => 1,
+                'name' => 'MacBook Air M2',
+                'description' => 'Supercharged by M2. Strikingly thin design. 13.6-inch Liquid Retina display.',
                 'price' => 18999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=MacBook+Air+M2'
+                'image' => 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 2, 
-                'name' => 'MSI Modern 14', 
-                'description' => 'Laptop kerja Intel Core i5, RAM 8GB, SSD 512GB, desain premium', 
-                'price' => 9499000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=MSI+Modern'
-            ],
-
-            // TV & Audio (category_id: 3)
-            [
-                'category_id' => 3, 
-                'name' => 'Samsung Smart TV 55" 4K', 
-                'description' => 'Smart TV Samsung Crystal UHD 4K, Tizen OS, HDR10+, Voice Assistant', 
-                'price' => 7999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Samsung+TV'
+                'category_id' => 1,
+                'name' => 'Sony WH-1000XM5',
+                'description' => 'Industry-leading noise canceling headphones with exceptional sound quality.',
+                'price' => 5999000,
+                'image' => 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 3, 
-                'name' => 'LG OLED TV 55"', 
-                'description' => 'TV OLED LG dengan WebOS, Dolby Vision, Dolby Atmos, Magic Remote', 
-                'price' => 17999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=LG+OLED+TV'
-            ],
-            [
-                'category_id' => 3, 
-                'name' => 'TCL Android TV 43" 4K', 
-                'description' => 'Smart TV TCL dengan Google TV, layar 4K HDR, built-in Chromecast', 
-                'price' => 4299000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=TCL+Android+TV'
-            ],
-            [
-                'category_id' => 3, 
-                'name' => 'Sony Soundbar HT-S400', 
-                'description' => 'Soundbar Sony 2.1ch dengan wireless subwoofer, Bluetooth, 330W', 
-                'price' => 2999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Sony+Soundbar'
-            ],
-            [
-                'category_id' => 3, 
-                'name' => 'JBL Flip 6 Speaker', 
-                'description' => 'Speaker portable JBL waterproof IP67, bluetooth, 12 jam battery', 
-                'price' => 1599000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=JBL+Flip+6'
-            ],
-            [
-                'category_id' => 3, 
-                'name' => 'Sony WH-1000XM5', 
-                'description' => 'Headphone wireless Sony ANC terbaik, 30 jam battery, audio Hi-Res', 
-                'price' => 4999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Sony+Headphone'
+                'category_id' => 1,
+                'name' => 'PlayStation 5 Console',
+                'description' => 'Experience lightning fast loading with an ultra-high speed SSD.',
+                'price' => 9699000,
+                'image' => 'https://images.unsplash.com/photo-1606144042614-b0417c0ed615?auto=format&fit=crop&q=80&w=800'
             ],
 
-            // Peralatan Rumah Tangga (category_id: 4)
+            // FASHION (ID: 2)
             [
-                'category_id' => 4, 
-                'name' => 'Samsung Kulkas 2 Pintu', 
-                'description' => 'Kulkas Samsung 300L, Digital Inverter, Twin Cooling Plus, hemat listrik', 
-                'price' => 6499000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Kulkas+Samsung'
+                'category_id' => 2,
+                'name' => 'Nike Air Jordan 1 High',
+                'description' => 'Iconic style, premium leather, and comfort for everyday wear.',
+                'price' => 2899000,
+                'image' => 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 4, 
-                'name' => 'LG Mesin Cuci Front Load', 
-                'description' => 'Mesin cuci LG 8.5kg, AI DD, Steam Wash, Smart ThinQ', 
-                'price' => 7999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Mesin+Cuci+LG'
+                'category_id' => 2,
+                'name' => 'Levi\'s Denim Jacket',
+                'description' => 'Classic trucker jacket that gets better with every wear.',
+                'price' => 1499000,
+                'image' => 'https://images.unsplash.com/photo-1601333762779-83bf81eaad56?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 4, 
-                'name' => 'Panasonic AC 1 PK', 
-                'description' => 'AC Panasonic Inverter, Nanoe-G, hemat listrik, auto swing', 
-                'price' => 4599000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=AC+Panasonic'
+                'category_id' => 2,
+                'name' => 'Ray-Ban Aviator Sunglasses',
+                'description' => 'Timeless design meeting modern quality. 100% UV protection.',
+                'price' => 2200000,
+                'image' => 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 4, 
-                'name' => 'Philips Air Fryer XXL', 
-                'description' => 'Air Fryer Philips 7.3L, Fat Removal Tech, Rapid Air, digital control', 
-                'price' => 3299000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Philips+Air+Fryer'
+                'category_id' => 2,
+                'name' => 'Adidas Ultraboost Light',
+                'description' => 'Experience epic energy with the lightest Ultraboost ever.',
+                'price' => 3000000,
+                'image' => 'https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?auto=format&fit=crop&q=80&w=800'
+            ],
+
+            // HOME (ID: 3)
+            [
+                'category_id' => 3,
+                'name' => 'Minimalist Coffee Table',
+                'description' => 'Modern oak wood coffee table perfect for any living room.',
+                'price' => 1250000,
+                'image' => 'https://images.unsplash.com/photo-1532372320572-cda25653a26d?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 4, 
-                'name' => 'Sharp Rice Cooker Digital', 
-                'description' => 'Rice cooker Sharp 1.8L, digital display, 12 menu masak, inner pot tebal', 
+                'category_id' => 3,
+                'name' => 'Ceramic Flower Vase',
+                'description' => 'Handcrafted ceramic vase to elevate your home decor.',
+                'price' => 450000,
+                'image' => 'https://images.unsplash.com/photo-1581783342308-f792ca438912?auto=format&fit=crop&q=80&w=800'
+            ],
+            [
+                'category_id' => 3,
+                'name' => 'Aromatherapy Diffuser',
+                'description' => 'Ultrasonic essential oil diffuser with LED mood lighting.',
+                'price' => 380000,
+                'image' => 'https://images.unsplash.com/photo-1602928321679-560bb453f190?auto=format&fit=crop&q=80&w=800'
+            ],
+            [
+                'category_id' => 3,
+                'name' => 'Luxury Cotton Bed Sheets',
+                'description' => '400 thread count Egyptian cotton sheets for the perfect sleep.',
                 'price' => 899000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Rice+Cooker'
-            ],
-            [
-                'category_id' => 4, 
-                'name' => 'Electrolux Vacuum Cleaner', 
-                'description' => 'Vacuum cleaner Electrolux 2000W, HEPA filter, anti-allergen', 
-                'price' => 1899000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Vacuum+Cleaner'
+                'image' => 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&q=80&w=800'
             ],
 
-            // Aksesoris Elektronik (category_id: 5)
+            // BOOKS (ID: 4)
             [
-                'category_id' => 5, 
-                'name' => 'Apple AirPods Pro 2', 
-                'description' => 'TWS Apple dengan ANC, Spatial Audio, MagSafe case, 6 jam battery', 
-                'price' => 3999000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=AirPods+Pro'
+                'category_id' => 4,
+                'name' => 'Atomic Habits',
+                'description' => 'An Easy & Proven Way to Build Good Habits & Break Bad Ones.',
+                'price' => 280000,
+                'image' => 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 5, 
-                'name' => 'Samsung Galaxy Watch 6', 
-                'description' => 'Smartwatch Samsung, WearOS, BIA sensor, sleep tracking, GPS', 
-                'price' => 4499000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Galaxy+Watch'
+                'category_id' => 4,
+                'name' => 'The Psychology of Money',
+                'description' => 'Timeless lessons on wealth, greed, and happiness.',
+                'price' => 150000,
+                'image' => 'https://images.unsplash.com/photo-1592496431122-2349e0fbc666?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 5, 
-                'name' => 'Logitech MX Master 3S', 
-                'description' => 'Mouse wireless premium, 8000 DPI, silent click, USB-C charging', 
-                'price' => 1599000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Mouse+Logitech'
+                'category_id' => 4,
+                'name' => 'Design of Everyday Things',
+                'description' => 'The fundamental principles of great design and usability.',
+                'price' => 320000,
+                'image' => 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 5, 
-                'name' => 'Anker PowerCore 20000mAh', 
-                'description' => 'Power bank Anker 20000mAh, fast charging 22.5W, 2 USB output', 
-                'price' => 499000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Power+Bank'
+                'category_id' => 4,
+                'name' => 'Sapiens: A Brief History',
+                'description' => 'Explore the history of humankind from the Stone Age to the Silicon Age.',
+                'price' => 290000,
+                'image' => 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?auto=format&fit=crop&q=80&w=800'
+            ],
+
+            // SPORTS (ID: 5)
+            [
+                'category_id' => 5,
+                'name' => 'Yoga Mat Premium',
+                'description' => 'Non-slip eco-friendly yoga mat for your daily practice.',
+                'price' => 350000,
+                'image' => 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?auto=format&fit=crop&q=80&w=800'
             ],
             [
-                'category_id' => 5, 
-                'name' => 'Baseus GaN Charger 65W', 
-                'description' => 'Charger USB-C 65W GaN, multi port, fast charging laptop & HP', 
-                'price' => 399000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Charger+GaN'
-            ],
-            [
-                'category_id' => 5, 
-                'name' => 'Xiaomi Mi Band 8', 
-                'description' => 'Fitness tracker Xiaomi, AMOLED 1.62 inch, SpO2, 150+ sports mode', 
-                'price' => 599000,
-                'image' => 'https://placehold.co/600x600/252f3f/ffffff.png?text=Mi+Band+8'
+                'category_id' => 5,
+                'name' => 'Dumbbell Set 10kg',
+                'description' => 'Adjustable dumbbell set for home workout.',
+                'price' => 850000,
+                'image' => 'https://images.unsplash.com/photo-1638536532686-d610adfc8e5c?auto=format&fit=crop&q=80&w=800'
             ],
         ];
 
         foreach ($products as $product) {
-            Product::create($product);
+            Product::create($product + ['stock' => 20]);
         }
     }
 }
