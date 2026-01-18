@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         // Create categories first
         $this->call(CategorySeeder::class);
 
+        // Create demo user
+        $this->call(UserSeeder::class);
+
         // Then create products
         $this->call(ProductSeeder::class);
     }

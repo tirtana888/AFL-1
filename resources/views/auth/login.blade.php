@@ -55,6 +55,18 @@
                                 </button>
                             </div>
                         </form>
+                        <div class="d-grid mb-3">
+                            <button type="button" onclick="fillUserDemo()" class="btn btn-outline-secondary">
+                                <i class="bi bi-magic me-2"></i>Fill Demo Credentials
+                            </button>
+                        </div>
+
+                        <script>
+                            function fillUserDemo() {
+                                document.getElementById('email').value = 'user@ciputra.com';
+                                document.getElementById('password').value = 'ALP4';
+                            }
+                        </script>
                     </div>
                 </div>
 
