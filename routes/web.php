@@ -36,7 +36,13 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     
     // Stock Management
-    Route::resource('stock', StockController::class)->only(['index', 'edit', 'update']);
+    Route::resource('stock', StockController::class)
+        ->only(['index', 'edit', 'update'])
+        ->names([
+            'index' => 'admin.stock.index',
+            'edit' => 'admin.stock.edit',
+            'update' => 'admin.stock.update',
+        ]);
     
     // Discounts (simplified - just routes, will create controller later)
     Route::get('/discounts', function() { 
