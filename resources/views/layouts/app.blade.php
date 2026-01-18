@@ -347,6 +347,7 @@
                         <li><a href="{{ route('products') }}" class="text-white-50 text-decoration-none hover-link">Products</a></li>
                         <li><a href="{{ route('about') }}" class="text-white-50 text-decoration-none hover-link">About Us</a></li>
                         <li><a href="{{ route('faq') }}" class="text-white-50 text-decoration-none hover-link">FAQ</a></li>
+                        <li><a href="{{ route('report') }}" class="text-white-50 text-decoration-none hover-link">Project Report / Docs</a></li>
                         <li><a href="{{ route('contact') }}" class="text-white-50 text-decoration-none hover-link">Contact</a></li>
                     </ul>
                 </div>

@@ -120,6 +120,10 @@ Route::get('/contact', function () {
     return view('pages.contact');
 })->name('contact');
 
+Route::get('/project-report', function () {
+    return view('pages.report');
+})->name('report');
+
 // Language Switcher
 Route::post('/locale/switch', [App\Http\Controllers\LocaleController::class, 'switch'])->name('locale.switch');
 
