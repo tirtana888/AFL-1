@@ -72,7 +72,16 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     })->name('admin.profile.edit');
     
     // Promo Codes
-    Route::resource('promo-codes', \App\Http\Controllers\Admin\PromoCodeController::class);
+    Route::resource('promo-codes', \App\Http\Controllers\Admin\PromoCodeController::class)
+        ->names([
+            'index' => 'admin.promo-codes.index',
+            'create' => 'admin.promo-codes.create',
+            'store' => 'admin.promo-codes.store',
+            'show' => 'admin.promo-codes.show',
+            'edit' => 'admin.promo-codes.edit',
+            'update' => 'admin.promo-codes.update',
+            'destroy' => 'admin.promo-codes.destroy',
+        ]);
 
     // Product CRUD Management (Admin Only)
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
