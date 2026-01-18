@@ -24,9 +24,15 @@
                     @csrf
                     @method('PUT')
                     
-                    <div class="mb-3">
-                        <label class="form-label">Current Stock</label>
-                        <input type="text" class="form-control" value="{{ $product->stock }}" disabled>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Current Stock</label>
+                            <input type="text" class="form-control" value="{{ $product->stock }}" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Current Price</label>
+                            <input type="text" class="form-control" value="Rp {{ number_format($product->price, 0) }}" disabled>
+                        </div>
                     </div>
                     
                     <div class="mb-3">
@@ -36,12 +42,21 @@
                         @error('stock')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <small class="text-muted">Enter the new stock quantity</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">New Price (Rp) *</label>
+                        <input type="number" name="price" class="form-control @error('price') is-invalid @enderror" 
+                               value="{{ old('price', (int)$product->price) }}" min="0" required>
+                        @error('price')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="text-muted">Enter the new price for this product</small>
                     </div>
                     
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-circle"></i> Update Stock
+                            <i class="bi bi-check-circle"></i> Update Stock & Price
                         </button>
                         <a href="{{ route('admin.stock.index') }}" class="btn btn-secondary">
                             <i class="bi bi-x-circle"></i> Cancel

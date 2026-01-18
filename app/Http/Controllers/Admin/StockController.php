@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\PriceAlert;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
@@ -34,11 +35,29 @@ class StockController extends Controller
     {
         $request->validate([
             'stock' => 'required|integer|min:0',
+            'price' => 'required|numeric|min:0',
         ]);
+
+        $oldPrice = $stock->price;
+        $newPrice = $request->price;
         
-        $stock->update(['stock' => $request->stock]);
+        $stock->update([
+            'stock' => $request->stock,
+            'price' => $newPrice
+        ]);
+
+        if ($newPrice < $oldPrice) {
+            // Logic for price drop notification
+            // Find alerts that match (either no target_price or price hit target_price)
+            PriceAlert::where('product_id', $stock->id)
+                ->where(function ($query) use ($newPrice) {
+                    $query->whereNull('target_price')
+                          ->orWhere('target_price', '>=', $newPrice);
+                })
+                ->update(['is_notified' => true]);
+        }
         
         return redirect()->route('admin.stock.index')
-            ->with('success', 'Stock updated successfully for ' . $stock->name);
+            ->with('success', 'Stock & Price updated successfully for ' . $stock->name);
     }
 }

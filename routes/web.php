@@ -160,6 +160,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/checkout/promo', [OrderController::class, 'applyPromoCode'])->name('checkout.applyPromo');
     Route::post('/checkout/promo/remove', [OrderController::class, 'removePromoCode'])->name('checkout.removePromo');
+    Route::post('/checkout/direct/{product}', [OrderController::class, 'directCheckout'])->name('checkout.direct');
 
     /**
      * ORDER HISTORY - Riwayat Pembelian
@@ -176,12 +177,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/wishlist/{wishlist}', [\App\Http\Controllers\WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
     /**
+     * ADDRESS BOOK - Kelola Alamat Pengiriman
+     */
+    Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
+    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+    Route::post('/addresses/{address}/default', [AddressController::class, 'setDefault'])->name('addresses.default');
+    Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
+
+    /**
      * REVIEWS - Rating & Review Produk
      */
     Route::post('/products/{product}/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
     Route::put('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
     
+    /**
+     * PRICE ALERTS - Notifikasi Penurunan Harga
+     */
+    Route::post('/products/{product}/price-alert', [PriceAlertController::class, 'store'])->name('price-alerts.store');
+    Route::delete('/price-alerts/{alert}', [PriceAlertController::class, 'destroy'])->name('price-alerts.destroy');
+
     /**
      * LOYALTY PROGRAM - Points & Rewards
      */

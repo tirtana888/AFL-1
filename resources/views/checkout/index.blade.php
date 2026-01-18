@@ -27,18 +27,40 @@
                         <form method="POST" action="{{ route('checkout.store') }}">
                             @csrf
 
-                            <div class="mb-4">
+                                @if($addresses->count() > 0)
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Select Saved Address</label>
+                                        <div class="list-group">
+                                            @foreach($addresses as $addr)
+                                                <button type="button" class="list-group-item list-group-item-action address-select"
+                                                        data-address="{{ $addr->address }}" data-recipient="{{ $addr->recipient_name }}" data-phone="{{ $addr->phone }}">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <span class="badge bg-primary me-2">{{ $addr->name }}</span>
+                                                            <strong>{{ $addr->recipient_name }}</strong>
+                                                        </div>
+                                                        @if($addr->is_default)
+                                                            <span class="badge bg-success">Default</span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="small text-muted mt-1">{{ $addr->address }}</div>
+                                                    <div class="small text-muted">{{ $addr->phone }}</div>
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <label for="shipping_address" class="form-label fw-semibold">
                                     Shipping Address <span class="text-danger">*</span>
                                 </label>
                                 <textarea class="form-control @error('shipping_address') is-invalid @enderror"
                                     id="shipping_address" name="shipping_address" rows="4"
                                     placeholder="Enter your complete shipping address including street, city, postal code..."
-                                    required>{{ old('shipping_address') }}</textarea>
+                                    required>{{ old('shipping_address', $addresses->where('is_default', true)->first()->address ?? '') }}</textarea>
                                 @error('shipping_address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
 
                             <div class="mb-4">
                                 <label class="form-label fw-semibold">

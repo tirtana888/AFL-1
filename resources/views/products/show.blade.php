@@ -70,22 +70,84 @@
 
                 <div class="d-grid gap-2">
                     @auth
-                        <form method="POST" action="{{ route('cart.add', $product) }}">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
-                                <i class="bi bi-cart-plus"></i> Add to Cart
-                            </button>
-                        </form>
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <form method="POST" action="{{ route('cart.add', $product) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-primary btn-lg w-100">
+                                        <i class="bi bi-cart-plus"></i> Add to Cart
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <form method="POST" action="{{ route('checkout.direct', $product) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="bi bi-lightning-charge"></i> Buy Now
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-primary btn-lg">
-                            <i class="bi bi-box-arrow-in-right"></i> Login to Add to Cart
+                            <i class="bi bi-box-arrow-in-right"></i> Login to Buy
                         </a>
                     @endauth
 
-                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">
-                        <i class="bi bi-pencil"></i> Edit Product
-                    </a>
+                    @auth
+                        @if(Auth::guard('admin')->check())
+                        <a href="{{ route('admin.stock.edit', $product->id) }}" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Edit Product (Admin)
+                        </a>
+                        @endif
+                    @endauth
                 </div>
+
+                {{-- Social Share --}}
+                <div class="mt-4 pt-3 border-top">
+                    <h6>Share this product:</h6>
+                    <div class="d-flex gap-2">
+                        <a href="https://wa.me/?text={{ urlencode($product->name . ' - ' . route('products.show', $product)) }}" 
+                           target="_blank" class="btn btn-sm btn-success rounded-circle" title="Share to WhatsApp">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('products.show', $product)) }}" 
+                           target="_blank" class="btn btn-sm btn-primary rounded-circle" title="Share to Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text={{ urlencode($product->name) }}&url={{ urlencode(route('products.show', $product)) }}" 
+                           target="_blank" class="btn btn-sm btn-info text-white rounded-circle" title="Share to X (Twitter)">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                        <a href="https://t.me/share/url?url={{ urlencode(route('products.show', $product)) }}&text={{ urlencode($product->name) }}" 
+                           target="_blank" class="btn btn-sm btn-primary rounded-circle" style="background-color: #0088cc;" title="Share to Telegram">
+                            <i class="bi bi-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Price Alert --}}
+                @auth
+                    <div class="mt-3">
+                        @php
+                            $hasAlert = \App\Models\PriceAlert::where('user_id', Auth::id())->where('product_id', $product->id)->first();
+                        @endphp
+                        
+                        @if($hasAlert)
+                            <form action="{{ route('price-alerts.destroy', $hasAlert) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-secondary w-100">
+                                    <i class="bi bi-bell-slash"></i> Remove Price Alert
+                                </button>
+                            </form>
+                        @else
+                            <button type="button" class="btn btn-sm btn-outline-info w-100" data-bs-toggle="modal" data-bs-target="#priceAlertModal">
+                                <i class="bi bi-bell"></i> Notify me of price drops
+                            </button>
+                        @endif
+                    </div>
+                @endauth
 
                 <div class="mt-3">
                     <small class="text-muted">

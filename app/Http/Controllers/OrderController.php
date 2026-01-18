@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\PromoCode;
+use App\Models\ShippingAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,18 +22,33 @@ class OrderController extends Controller
      */
     public function checkout()
     {
-        $cartItems = Cart::with('product')
-            ->where('user_id', Auth::id())
-            ->get();
+        $total = 0;
 
-        // Redirect jika keranjang kosong
-        if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Cart is empty!');
+        if (Session::has('direct_buy')) {
+            $data = Session::get('direct_buy');
+            $product = \App\Models\Product::find($data['product_id']);
+            $cartItems = collect([(object)[
+                'product' => $product,
+                'quantity' => $data['quantity'],
+                'product_id' => $product->id
+            ]]);
+            $total = $product->price * $data['quantity'];
+        } else {
+            $cartItems = Cart::with('product')
+                ->where('user_id', Auth::id())
+                ->get();
+
+            // Redirect jika keranjang kosong
+            if ($cartItems->isEmpty()) {
+                return redirect()->route('cart.index')->with('error', 'Cart is empty!');
+            }
+
+            $total = $cartItems->sum(function ($item) {
+                return $item->product->price * $item->quantity;
+            });
         }
 
-        $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
+        $addresses = ShippingAddress::where('user_id', Auth::id())->orderBy('is_default', 'desc')->get();
 
         $discount = 0;
         $promoCode = null;
@@ -45,7 +61,7 @@ class OrderController extends Controller
             }
         }
 
-        return view('checkout.index', compact('cartItems', 'total', 'discount', 'promoCode'));
+        return view('checkout.index', compact('cartItems', 'total', 'discount', 'promoCode', 'addresses'));
     }
 
     /**
@@ -59,17 +75,31 @@ class OrderController extends Controller
             'payment_method' => 'required|string|in:transfer,cod,ewallet'
         ]);
 
-        $cartItems = Cart::with('product')
-            ->where('user_id', Auth::id())
-            ->get();
+        $total = 0;
+        $isDirect = Session::has('direct_buy');
 
-        if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Cart is empty!');
+        if ($isDirect) {
+            $data = Session::get('direct_buy');
+            $product = \App\Models\Product::find($data['product_id']);
+            $cartItems = collect([(object)[
+                'product' => $product,
+                'quantity' => $data['quantity'],
+                'product_id' => $product->id
+            ]]);
+            $total = $product->price * $data['quantity'];
+        } else {
+            $cartItems = Cart::with('product')
+                ->where('user_id', Auth::id())
+                ->get();
+
+            if ($cartItems->isEmpty()) {
+                return redirect()->route('cart.index')->with('error', 'Cart is empty!');
+            }
+
+            $total = $cartItems->sum(function ($item) {
+                return $item->product->price * $item->quantity;
+            });
         }
-
-        $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
 
         $discount = 0;
         $promoCodeId = null;
@@ -112,8 +142,12 @@ class OrderController extends Controller
                 ]);
             }
 
-            // 3. Kosongkan keranjang
-            Cart::where('user_id', Auth::id())->delete();
+            // 3. Kosongkan keranjang (hanya jika bukan direct buy)
+            if (!Session::has('direct_buy')) {
+                Cart::where('user_id', Auth::id())->delete();
+            } else {
+                Session::forget('direct_buy');
+            }
         });
 
         return redirect()->route('orders.history')->with('success', 'Order placed!');
@@ -165,5 +199,15 @@ class OrderController extends Controller
     {
         Session::forget('applied_promo');
         return back()->with('success', 'Promo code removed.');
+    }
+
+    public function directCheckout(Request $request, \App\Models\Product $product)
+    {
+        Session::put('direct_buy', [
+            'product_id' => $product->id,
+            'quantity' => $request->quantity ?? 1
+        ]);
+
+        return redirect()->route('checkout');
     }
 }
