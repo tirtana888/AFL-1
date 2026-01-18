@@ -93,6 +93,20 @@ Route::middleware('auth')->group(function () {
 
     // Menampilkan daftar semua order yang pernah dibuat user
     Route::get('/orders', [OrderController::class, 'history'])->name('orders.history');
+
+    /**
+     * WISHLIST - Produk Favorit
+     */
+    Route::get('/wishlist', [\App\Http\Controllers\WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/toggle/{product}', [\App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::delete('/wishlist/{wishlist}', [\App\Http\Controllers\WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+    /**
+     * REVIEWS - Rating & Review Produk
+     */
+    Route::post('/products/{product}/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+    Route::put('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 // =============================================================================

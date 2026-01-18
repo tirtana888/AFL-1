@@ -14,6 +14,12 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    
+    <!-- Dark Mode CSS -->
+    <link href="{{ asset('css/darkmode.css') }}" rel="stylesheet">
+    
+    <!-- Dark Mode Script (Load early to prevent flash) -->
+    <script src="{{ asset('js/darkmode.js') }}"></script>
 
     <style>
         :root {
@@ -223,6 +229,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('wishlist.index') }}">
+                                <i class="bi bi-heart me-1"></i>Wishlist
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('orders.history') }}">
                                 <i class="bi bi-receipt me-1"></i>Orders
                             </a>
@@ -254,6 +265,15 @@
                             </a>
                         </li>
                     @endauth
+                    
+                    <!-- Dark Mode Toggle -->
+                    <li class="nav-item">
+                        <button onclick="toggleDarkMode()" class="dark-mode-toggle ms-2" title="Toggle Dark Mode">
+                            <span class="toggle-icon">
+                                <i class="bi bi-moon-fill"></i>
+                            </span>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>

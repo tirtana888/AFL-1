@@ -3,7 +3,7 @@
 @section('title', $product->name . ' - Laravel E-commerce')
 
 @section('content')
-    <div class="container">
+    <div class="container py-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('products') }}">Products</a></li>
@@ -12,8 +12,9 @@
         </nav>
 
         <div class="row">
-            <div class="col-md-6">
-                <div class="card">
+            {{-- Product Image --}}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
                     <div class="card-body text-center bg-light"
                         style="min-height: 400px; display: flex; align-items: center; justify-content: center;">
                         <i class="bi bi-image" style="font-size: 100px; color: #ccc;"></i>
@@ -21,9 +22,41 @@
                 </div>
             </div>
 
+            {{-- Product Details --}}
             <div class="col-md-6">
-                <span class="badge bg-secondary mb-2">{{ $product->category->name }}</span>
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="badge bg-secondary">{{ $product->category->name }}</span>
+                    @auth
+                        <button onclick="toggleWishlist({{ $product->id }})" id="wishlist-btn-{{ $product->id }}" 
+                                class="btn btn-sm {{ auth()->user()->wishlists()->where('product_id', $product->id)->exists() ? 'btn-danger' : 'btn-outline-danger' }}">
+                            <i class="bi bi-heart{{ auth()->user()->wishlists()->where('product_id', $product->id)->exists() ? '-fill' : '' }}"></i>
+                            <span id="wishlist-text-{{ $product->id }}">
+                                {{ auth()->user()->wishlists()->where('product_id', $product->id)->exists() ? 'Wishlist' : 'Add to Wishlist' }}
+                            </span>
+                        </button>
+                    @endauth
+                </div>
+
                 <h2>{{ $product->name }}</h2>
+                
+                {{-- Rating Display --}}
+                <div class="mb-3">
+                    @php
+                        $avgRating = $product->averageRating();
+                        $reviewCount = $product->reviewCount();
+                    @endphp
+                    <div class="d-flex align-items-center">
+                        <div class="stars me-2">
+                            @for($i = 1; $i <= 5; $i++)
+                                <i class="bi bi-star{{ $i <= round($avgRating) ? '-fill text-warning' : '' }}"></i>
+                            @endfor
+                        </div>
+                        <span class="text-muted">
+                            {{ number_format($avgRating, 1) }} ({{ $reviewCount }} {{ $reviewCount == 1 ? 'review' : 'reviews' }})
+                        </span>
+                    </div>
+                </div>
+
                 <h3 class="text-primary mb-4">Rp {{ number_format($product->price, 0, ',', '.') }}</h3>
 
                 <div class="mb-4">
@@ -57,5 +90,186 @@
                 </div>
             </div>
         </div>
+
+        {{-- Reviews Section --}}
+        <div class="row mt-5">
+            <div class="col-12">
+                <h4 class="mb-4">
+                    <i class="bi bi-chat-left-text"></i> Customer Reviews
+                </h4>
+
+                {{-- Write Review Form (Only for logged in users who haven't reviewed) --}}
+                @auth
+                    @php
+                        $userReview = $product->reviews()->where('user_id', auth()->id())->first();
+                    @endphp
+                    
+                    @if($userReview)
+                        {{-- Edit existing review --}}
+                        <div class="card mb-4 border-warning">
+                            <div class="card-header bg-warning text-white">
+                                <i class="bi bi-pencil"></i> Your Review
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ route('reviews.update', $userReview) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label class="form-label">Rating</label>
+                                        <div class="star-rating">
+                                            @for($i = 5; $i >= 1; $i--)
+                                                <input type="radio" name="rating" value="{{ $i }}" id="edit-star{{ $i }}" 
+                                                       {{ $userReview->rating == $i ? 'checked' : '' }} required>
+                                                <label for="edit-star{{ $i }}">★</label>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Review (Optional)</label>
+                                        <textarea name="review_text" class="form-control" rows="3" 
+                                                  placeholder="Share your experience...">{{ $userReview->review_text }}</textarea>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="bi bi-save"></i> Update Review
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger" 
+                                                onclick="if(confirm('Delete your review?')) document.getElementById('delete-review-form').submit();">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </form>
+                                <form id="delete-review-form" action="{{ route('reviews.destroy', $userReview) }}" method="POST" class="d-none">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </div>
+                        </div>
+                    @else
+                        {{-- Create new review --}}
+                        <div class="card mb-4 border-primary">
+                            <div class="card-header bg-primary text-white">
+                                <i class="bi bi-star"></i> Write a Review
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ route('reviews.store', $product) }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label class="form-label">Rating *</label>
+                                        <div class="star-rating">
+                                            @for($i = 5; $i >= 1; $i--)
+                                                <input type="radio" name="rating" value="{{ $i }}" id="star{{ $i }}" required>
+                                                <label for="star{{ $i }}">★</label>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Review (Optional)</label>
+                                        <textarea name="review_text" class="form-control" rows="3" 
+                                                  placeholder="Share your experience with this product..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-send"></i> Submit Review
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
+                @else
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> 
+                        <a href="{{ route('login') }}">Login</a> to write a review
+                    </div>
+                @endauth
+
+                {{-- Display All Reviews --}}
+                <div class="reviews-list">
+                    @forelse($product->reviews()->latest()->get() as $review)
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">{{ $review->user->name }}</h6>
+                                        <div class="stars-display mb-2">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <i class="bi bi-star{{ $i <= $review->rating ? '-fill text-warning' : '' }}"></i>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                                </div>
+                                @if($review->review_text)
+                                    <p class="mb-0 mt-2">{{ $review->review_text }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-chat" style="font-size: 3rem; opacity: 0.3;"></i>
+                            <p class="mt-2">No reviews yet. Be the first to review!</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
     </div>
+
+    {{-- Star Rating CSS --}}
+    <style>
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            font-size: 2rem;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffc107;
+        }
+    </style>
+
+    {{-- Wishlist Toggle Script --}}
+    <script>
+        function toggleWishlist(productId) {
+            fetch(`/wishlist/toggle/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const btn = document.getElementById(`wishlist-btn-${productId}`);
+                const icon = btn.querySelector('i');
+                const text = document.getElementById(`wishlist-text-${productId}`);
+                
+                if(data.action === 'added') {
+                    btn.classList.remove('btn-outline-danger');
+                    btn.classList.add('btn-danger');
+                    icon.classList.add('bi-heart-fill');
+                    icon.classList.remove('bi-heart');
+                    text.textContent = 'Wishlist';
+                } else {
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-danger');
+                    icon.classList.remove('bi-heart-fill');
+                    icon.classList.add('bi-heart');
+                    text.textContent = 'Add to Wishlist';
+                }
+                
+                // Show toast notification
+                alert(data.message);
+            });
+        }
+    </script>
 @endsection

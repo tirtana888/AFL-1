@@ -30,4 +30,30 @@ class Product extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    /**
+     * Get average rating for this product.
+     */
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    /**
+     * Get total review count.
+     */
+    public function reviewCount()
+    {
+        return $this->reviews()->count();
+    }
 }
