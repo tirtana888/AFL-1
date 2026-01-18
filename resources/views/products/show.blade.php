@@ -94,13 +94,16 @@
                         </a>
                     @endauth
 
-                    @auth
-                        @if(Auth::guard('admin')->check())
-                        <a href="{{ route('admin.stock.edit', $product->id) }}" class="btn btn-warning">
-                            <i class="bi bi-pencil"></i> Edit Product (Admin)
-                        </a>
-                        @endif
-                    @endauth
+                    @if(Auth::guard('admin')->check())
+                        <div class="mt-2">
+                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning w-100">
+                                <i class="bi bi-pencil"></i> Edit Product Details
+                            </a>
+                            <a href="{{ route('admin.stock.edit', $product->id) }}" class="btn btn-outline-warning w-100 mt-2">
+                                <i class="bi bi-box-seam"></i> Manage Stock & Price
+                            </a>
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Social Share --}}

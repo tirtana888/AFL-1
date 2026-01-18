@@ -12,9 +12,11 @@
                 </h2>
                 <p class="text-muted mb-0">Discover our amazing collection</p>
             </div>
+            @if(Auth::guard('admin')->check())
             <a href="{{ route('products.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-lg me-2"></i>Add Product
             </a>
+            @endif
         </div>
 
         <!-- Search & Filter Card -->

@@ -67,6 +67,12 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     
     // Promo Codes
     Route::resource('promo-codes', \App\Http\Controllers\Admin\PromoCodeController::class);
+
+    // Product CRUD Management (Admin Only)
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/edit/{product}', [ProductController::class, 'edit'])->name('products.edit');
+    Route::post('/products/update/{product}', [ProductController::class, 'update'])->name('products.update');
 });
 
 // =============================================================================
@@ -109,20 +115,8 @@ Route::post('/locale/switch', [App\Http\Controllers\LocaleController::class, 'sw
 // Menampilkan daftar produk dengan search, filter, sort
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 
-// Form tambah produk baru
-Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-
-// Menyimpan produk baru ke database
-Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
-
 // Menampilkan detail satu produk
 Route::get('/products/show/{product}', [ProductController::class, 'show'])->name('products.show');
-
-// Form edit produk
-Route::get('/products/edit/{product}', [ProductController::class, 'edit'])->name('products.edit');
-
-// Update produk di database
-Route::post('/products/update/{product}', [ProductController::class, 'update'])->name('products.update');
 
 // =============================================================================
 // PROTECTED ROUTES (Harus login)
